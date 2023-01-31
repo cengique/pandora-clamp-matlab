@@ -1,0 +1,10 @@
+*~
+
+# autoconf
+config.log
+config.status
+autom4te.cache/
+
+# dist files
+pandora-clamp-matlab-*.tar.gz
+pandora-clamp-matlab-*.zip
