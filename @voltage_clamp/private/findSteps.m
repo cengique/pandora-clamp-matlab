@@ -1,5 +1,5 @@
 function [time_steps, v_steps, i_steps] = ...
-    findSteps(data_v, data_i, dt, props)
+    findSteps(data_v, data_i, dt, id, props)
 
 % findSteps - Find time and magnitude of voltage steps and corresponding average steady-state currents.
 %
@@ -76,7 +76,7 @@ end
 
 num_steps = length(time_steps);
 
-assert(num_steps > 0, 'No steps found in data!');
+assert(num_steps > 0, [ 'No steps found in data for timeAvg of ' num2str(step_dur) ' in file ' id '!' ]);
 
 % for each step, find mean voltage and current
 v_steps = repmat(NaN, num_steps + 1, num_mags);
