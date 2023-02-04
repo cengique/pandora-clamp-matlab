@@ -3,13 +3,13 @@ function [results pas_md a_doc] = getResultsPassiveReCeElec(pas, props)
 % getResultsPassiveReCeElec - Estimates passive cell params based on Re Ce electrode model.
 %
 % Usage:
-% [results a_doc] = getResultsPassiveReCeElec(pas, props)
+% [results pas_md a_doc] = getResultsPassiveReCeElec(pas, props)
 %
 % Parameters:
 %   pas: A data_L1_passive object.
 %   props: Structure with optional properties.
 %     stepNum: Pre-pulse voltage step to be considered (default=2, so as not to
-%     start at the beginning of the trace; see getTimeRelStep). Post-pulse
+%     	       start at the beginning of the trace; see getTimeRelStep). Post-pulse
 %     	       step would be stepNum + 1.
 %     traceNum: Trace number to be analyzed (default=1).
 %     delay: Current response delay from voltage step (default=calculated).
@@ -32,6 +32,7 @@ function [results pas_md a_doc] = getResultsPassiveReCeElec(pas, props)
 %     subname: Name of subfunction in model_f to get/set parameters from.
 %     debug: If 1, print detailed information. Also enabled if
 %     		'warning on verbose' is issued.
+%     pause: If 1 (default), pauses and waits for keystroke between fits.
 %
 % Returns:
 %   results: A structure with all fitted passive parameters.
@@ -49,8 +50,8 @@ function [results pas_md a_doc] = getResultsPassiveReCeElec(pas, props)
 % step response. Multiple stages of optimization will be run focusing
 % at different regions in the current and adjusting select
 % parameters. The final fine-tuned estimates are prefixed with "fit_"
-% in the results. Run it after 'warning on verbose' to get detailed
-% information.
+% in the results. Run it after 'warning on verbose' or with props.debug
+% to get detailed information.
 %
 % See also: param_Re_Ce_cap_leak_act_int_t, param_vc_Rs_comp_int_t_test
 %
@@ -105,8 +106,7 @@ pas_level = getFieldDefault(props, 'passiveV', -55);
 pas_vsteps_idx = find(pas.data_vc.v_steps(step_num, :) < pas_level & pas.data_vc.v_steps(step_num + 1, :) < pas_level);
 % discretize to 1 mV steps 
 quant_steps = ...
-    quant(pas.data_vc.v_steps([step_num step_num+1], pas_vsteps_idx)', ...
-          1);
+    round(pas.data_vc.v_steps([step_num step_num+1], pas_vsteps_idx)');
 % eliminate no-change steps
 diff_steps = diff(quant_steps, 1, 2);
 yes_change_idx = abs(diff_steps) > 0;
@@ -449,8 +449,10 @@ function runFit(fitrange, str)
                    [ get(pas.data_vc, 'id') '-passive-fits' ], struct, ...
                    pas.data_vc.id, props);
 
-  disp('press enter to continue')
-  pause
+  if ~ isfield(props, 'pause') || props.pause ~= 0
+    disp('press enter to continue')
+    pause
+  end
 
 end
 

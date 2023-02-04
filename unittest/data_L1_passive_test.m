@@ -72,7 +72,7 @@ assertElementsAlmostEqual(orig_params.Re, Re, 'absolute', 10) % MOhm tolerance
 assertElementsAlmostEqual(orig_params.Cm, Cm, 'absolute', .005); % pF tolerance
 
 % run full fit
-new_params = getResultsPassiveReCeElec(a_pas, struct('minRe', 1))
+[new_params pas_md a_doc] = getResultsPassiveReCeElec(a_pas, struct('minRe', 1))
 
 % compare percent change (<20%)
 assertElementsAlmostEqual(...
