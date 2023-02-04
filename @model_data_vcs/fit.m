@@ -204,6 +204,9 @@ end
   else
     fig_props = struct;
   end
+
+  % initialize so it's shared with nested function
+  all_title = '';
   
   function a_plot = dispPlot(a_model)
   % is plotting disabled?
