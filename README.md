@@ -33,8 +33,12 @@ Windows with the above addpath command inside.
 Documentation:
 --------------------
 
-See the embedded documentation that comes with each file using the
-Matlab help browser.
+See the [`examples/`](examples/) folder for:
+- [Fitting passive and active properties from voltage clamp data](examples/passive_active_fits.m)
+- [Fitting a dataset of multiple files at once (files not provided)](examples/passive_fits_traceset.m)
+
+For usage of functions and classes, see the embedded documentation
+that comes with each file using the Matlab help browser.
 
 Copyright:
 --------------------
